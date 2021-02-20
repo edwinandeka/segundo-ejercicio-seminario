@@ -1,6 +1,6 @@
 ## Taller número 2 de seminario de grado 
 
-Lista de empleados en memoria
+Lista de empleados en memoria en JAVA
 utilizando Listas
      
 ### Installation
