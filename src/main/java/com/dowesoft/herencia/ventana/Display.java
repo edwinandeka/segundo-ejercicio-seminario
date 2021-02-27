@@ -158,7 +158,7 @@ public class Display {
                     listaEmpleados = agend.getListaEmpleados();
                     for (int i = 0; i < listaEmpleados.size(); i++) {
                         Empleado empleado = listaEmpleados.get(i);
-                        ventana.addText(empleado.getId() + ") " + empleado.getNombre() + " " + empleado.getApellido() + " ");
+                        ventana.addText(empleado.toString());
                     }
                     break;
                 case OPTION_SALIR:
