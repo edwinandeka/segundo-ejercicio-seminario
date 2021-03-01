@@ -18,7 +18,7 @@ public class Empleado extends Persona{
 
     @Override
     public String toString() {
-        return this.getId()+ ") " + this.getNombre()+ " " + this.getApellido()+ " $"+ this.getSalario()+ " "; //To change body of generated methods, choose Tools | Templates.
+        return this.getId()+ ") " + this.getNombre()+ " " + this.getApellido()+ " $"+ ((Double)this.getSalario()).intValue()+ " "; //To change body of generated methods, choose Tools | Templates.
     }
     
     

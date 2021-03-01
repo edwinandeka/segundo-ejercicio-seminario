@@ -10,7 +10,9 @@
 package com.dowesoft.herencia.ventana;
 
 import com.dowesoft.herencia.Empleado;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -27,7 +29,14 @@ public class Display {
     public static final int OPTION_REMOVER = 2;
     public static final int OPTION_ACTUALIZAR = 3;
     public static final int OPTION_LISTAR = 4;
-    public static final int OPTION_SALIR = 5;
+    public static final int OPTION_MAX = 5;
+    public static final int OPTION_MIN = 6;
+    public static final int OPTION_SORT = 7;
+    public static final int OPTION_REDUCE = 8;
+    public static final int OPTION_COUNT = 9;
+    public static final int OPTION_LIMIIT = 10;
+    public static final int OPTION_SALIR = 11;
+
 
         
     /**
@@ -55,6 +64,27 @@ public class Display {
     private int selectedOption;
     private int inputOption;
     private boolean modeEdit;
+    
+    
+    public String getRandomText() {
+        Random r = new Random();
+
+         String alphabet2 = "aeiou";    
+         String alphabet = "brtpsdhlcbnm";         
+
+         String generatedString = "";
+
+         for (int i = 0; i < 5; i++) {
+             if(i%2==0){
+                generatedString+=alphabet.charAt(r.nextInt(alphabet.length())); 
+             } else {
+                generatedString+=alphabet2.charAt(r.nextInt(alphabet2.length()));
+             }
+                     
+             
+         }
+        return generatedString;
+    }
 
     public Display(Ventana ventana) {
         
@@ -63,6 +93,24 @@ public class Display {
         this.selectedOption = -1;
         this.inputOption = 1;
         this.modeEdit = false;
+        
+        
+        for (int i = 0; i < 10; i++) {
+            
+            double ramdon = Math.random();
+            
+            Empleado e = new Empleado();
+            e.setId(i);
+            e.setNombre( getRandomText());
+            e.setApellido( getRandomText());
+            e.setSalario(100000*(i+1)*ramdon*2);
+            agend.add(e);
+        }
+        
+        
+         
+         
+         
 
         /**
          * opciones del menu al ser de tipo string y ser menus fijos 
@@ -78,7 +126,14 @@ public class Display {
                 + "2) Remover Empleado \n"
                 + "3) Actualizar Empleado \n"
                 + "4) Listar Empleados \n"
-                + "5) <= Salir \n\n"
+                + "5) Encontrar el empleado con mayor salario \n"
+                + "6) Encontrar el empleado con menor salario \n"
+                + "7) Ordenar los empleados por nombre \n"
+                + "8) Hallar la suma de los salarios de todos los empleados cuyo salario es mayor a 700000 \n"
+                + "9) Determinar el número total de empleados cuyo apellido comienza por la letra ‘A’ o ‘a’. \n"
+                + "10) Los 5 primeros empleados con el mayor salario \n"
+
+                + "11) <= Salir \n\n"
                 + "****************************************************** \n";
 
         opcion1 = "***************** Agregar Empleado **************** \n\n"
@@ -107,6 +162,7 @@ public class Display {
     public String processOptionMenu(String option) {
 
         ArrayList<Empleado> listaEmpleados;
+        Empleado empleado; 
         
         //enrrutador de proceso
         if (selectedOption != -1) {
@@ -141,7 +197,7 @@ public class Display {
 
                     listaEmpleados = agend.getListaEmpleados();
                     for (int i = 0; i < listaEmpleados.size(); i++) {
-                        Empleado empleado = listaEmpleados.get(i);
+                         empleado = listaEmpleados.get(i);
                         ventana.addText(empleado.getId() + ") " + empleado.getNombre() + " " + empleado.getApellido() + " ");
                     }
                     break;
@@ -157,10 +213,63 @@ public class Display {
 
                     listaEmpleados = agend.getListaEmpleados();
                     for (int i = 0; i < listaEmpleados.size(); i++) {
-                        Empleado empleado = listaEmpleados.get(i);
+                         empleado = listaEmpleados.get(i);
                         ventana.addText(empleado.toString());
                     }
                     break;
+                    
+                case OPTION_MAX:  
+
+                    ventana.addText("_________Salario Máximo________");
+                    ventana.addText("Id) Nombre | Apellido | Salario");
+                    ventana.addText("_______________________________");
+                    empleado = agend.getMaxEmpleado();
+                    ventana.addText(empleado.toString());
+
+                break;
+                case OPTION_MIN: 
+                    ventana.addText("_________Salario Mínimo________");
+                    ventana.addText("Id) Nombre | Apellido | Salario");
+                    ventana.addText("_______________________________");
+                    empleado = agend.getMinEmpleado();
+                    ventana.addText(empleado.toString());
+
+                break;
+                case OPTION_SORT:  
+                    ventana.showText(this.getOpcion4());
+                    ventana.addText("Id) Nombre | Apellido | Salario");
+                    ventana.addText("_______________________________");
+                    agend.sortEmpleados();
+                    listaEmpleados = agend.getListaEmpleados();
+                    for (int i = 0; i < listaEmpleados.size(); i++) {
+                         empleado = listaEmpleados.get(i);
+                        ventana.addText(empleado.toString());
+                    }
+
+                break;
+                case OPTION_REDUCE:  
+                    
+                    int salarios = agend.sumaEmpleados();
+                    ventana.addText("______Suma salarios__$"+salarios+"____");
+
+                break;
+                case OPTION_COUNT:  
+                    int count = agend.countEmpleados();
+                    ventana.addText("______Empleados con A__"+count+"____");
+
+                break;
+                case OPTION_LIMIIT:  
+                    ventana.addText("Id) Nombre | Apellido | Salario");
+                    ventana.addText("_______________________________");
+                    agend.sortEmpleados();
+                    listaEmpleados = agend.sortEmpleadosSalario();
+                    for (int i = 0; i < listaEmpleados.size(); i++) {
+                         empleado = listaEmpleados.get(i);
+                        ventana.addText(empleado.toString());
+                    }
+
+                break;
+                        
                 case OPTION_SALIR:
 
                     System.exit(0);
